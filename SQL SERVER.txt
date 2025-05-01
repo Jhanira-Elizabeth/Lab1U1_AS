@@ -1,0 +1,67 @@
+-- Crear base de datos
+CREATE DATABASE ClinicaDB;
+GO
+
+USE ClinicaDB;
+GO
+
+-- Tabla Paciente
+CREATE TABLE Paciente (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Nombre NVARCHAR(100) NOT NULL,
+    Apellido NVARCHAR(100) NOT NULL,
+    Cedula NVARCHAR(20) NOT NULL UNIQUE,
+    FechaNacimiento DATE NOT NULL,
+    Email NVARCHAR(100)
+);
+GO
+
+-- Tabla Medico
+CREATE TABLE Medico (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Nombre NVARCHAR(100) NOT NULL,
+    Especialidad NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100)
+);
+GO
+
+-- Tabla Cita
+CREATE TABLE Cita (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    IdPaciente INT NOT NULL,
+    IdMedico INT NOT NULL,
+    FechaHora DATETIME NOT NULL,
+    Motivo NVARCHAR(255),
+    FOREIGN KEY (IdPaciente) REFERENCES Paciente(Id),
+    FOREIGN KEY (IdMedico) REFERENCES Medico(Id)
+);
+GO
+
+
+
+//PostgreSQL
+CREATE TABLE Paciente (
+    Id SERIAL PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    Cedula VARCHAR(20) NOT NULL UNIQUE,
+    FechaNacimiento DATE NOT NULL,
+    Email VARCHAR(100)
+);
+
+CREATE TABLE Medico (
+    Id SERIAL PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Especialidad VARCHAR(100) NOT NULL,
+    Email VARCHAR(100)
+);
+
+CREATE TABLE Cita (
+    Id SERIAL PRIMARY KEY,
+    IdPaciente INTEGER NOT NULL,
+    IdMedico INTEGER NOT NULL,
+    FechaHora TIMESTAMP NOT NULL,
+    Motivo VARCHAR(255),
+    FOREIGN KEY (IdPaciente) REFERENCES Paciente(Id),
+    FOREIGN KEY (IdMedico) REFERENCES Medico(Id)
+);
