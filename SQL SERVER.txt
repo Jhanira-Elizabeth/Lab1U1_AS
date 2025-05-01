@@ -65,3 +65,27 @@ CREATE TABLE Cita (
     FOREIGN KEY (IdPaciente) REFERENCES Paciente(Id),
     FOREIGN KEY (IdMedico) REFERENCES Medico(Id)
 );
+
+//Pacientes
+{
+    "nombre": "María",
+    "apellido": "González",
+    "cedula": "87654321",
+    "fechanacimiento": "1985-07-22T00:00:00.000Z",
+    "email": "maria.gonzalez@ejemplo.com"
+}
+
+//Medicos
+{
+    "nombre": "Dr. Alejandro Fernández",
+    "especialidad": "Cardiología",
+    "email": "alejandro.fernandez@hospital.com"
+}
+
+//Citas
+{
+    "idPaciente": 1,
+    "idMedico": 1,
+    "fechaHora": "2025-05-10T09:30:00.000Z",
+    "motivo": "Control de presión arterial"
+}
