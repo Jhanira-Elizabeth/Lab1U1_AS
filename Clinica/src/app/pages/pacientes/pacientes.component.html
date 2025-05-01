@@ -1,1 +1,47 @@
-<p>pacientes works!</p>
+<h2>Listado de Pacientes</h2>
+
+<table border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Cédula</th>
+      <th>Fecha Nacimiento</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let paciente of pacientes">
+      <td>{{ paciente.nombre }}</td>
+      <td>{{ paciente.apellido }}</td>
+      <td>{{ paciente.cedula }}</td>
+      <td>{{ paciente.fechaNacimiento }}</td>
+      <td>{{ paciente.email }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Agregar Paciente</h3>
+<form (ngSubmit)="agregarPaciente()">
+  <label>Nombre:
+    <input type="text" [(ngModel)]="nuevoPaciente.nombre" name="nombre" required />
+  </label><br />
+
+  <label>Apellido:
+    <input type="text" [(ngModel)]="nuevoPaciente.apellido" name="apellido" required />
+  </label><br />
+
+  <label>Cédula:
+    <input type="text" [(ngModel)]="nuevoPaciente.cedula" name="cedula" required />
+  </label><br />
+
+  <label>Fecha Nacimiento:
+    <input type="date" [(ngModel)]="nuevoPaciente.fechaNacimiento" name="fechaNacimiento" required />
+  </label><br />
+
+  <label>Email:
+    <input type="email" [(ngModel)]="nuevoPaciente.email" name="email" />
+  </label><br /><br />
+
+  <button type="submit">Agregar</button>
+</form>

@@ -27,4 +27,16 @@ export class CitaService {
     this.citas.push(cita);
     return of(cita);
   }
+  eliminarCita(id: number): Observable<void> {
+    this.citas = this.citas.filter(c => c.id !== id);
+    return of(undefined);
+  }
+  actualizarCita(cita: Cita): Observable<Cita | undefined> {
+    const index = this.citas.findIndex(c => c.id === cita.id);
+    if (index !== -1) {
+      this.citas[index] = cita;
+      return of(cita);
+    }
+    return of(undefined);
+}
 }

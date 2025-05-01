@@ -1,1 +1,35 @@
-<p>medicos works!</p>
+<h2>Listado de Médicos</h2>
+
+<table border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Especialidad</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let medico of medicos">
+      <td>{{ medico.nombre }}</td>
+      <td>{{ medico.especialidad }}</td>
+      <td>{{ medico.email }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Agregar Médico</h3>
+<form (ngSubmit)="agregarMedico()">
+  <label>Nombre:
+    <input type="text" [(ngModel)]="nuevoMedico.nombre" name="nombre" required />
+  </label><br />
+
+  <label>Especialidad:
+    <input type="text" [(ngModel)]="nuevoMedico.especialidad" name="especialidad" required />
+  </label><br />
+
+  <label>Email:
+    <input type="email" [(ngModel)]="nuevoMedico.email" name="email" />
+  </label><br /><br />
+
+  <button type="submit">Agregar</button>
+</form>
