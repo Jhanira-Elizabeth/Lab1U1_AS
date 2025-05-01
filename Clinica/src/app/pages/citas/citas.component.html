@@ -1,0 +1,54 @@
+<h2>Listado de Citas</h2>
+
+<table border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Paciente</th>
+      <th>Médico</th>
+      <th>Fecha y Hora</th>
+      <th>Motivo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cita of citas">
+      <td>{{ getNombrePaciente(cita.idPaciente) }}</td>
+      <td>{{ getNombreMedico(cita.idMedico) }}</td>
+      <td>{{ cita.fechaHora }}</td>
+      <td>{{ cita.motivo }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Agregar Cita</h3>
+<form (ngSubmit)="agregarCita()">
+  <label
+    >Paciente:
+    <select [(ngModel)]="nuevaCita.idPaciente" name="idPaciente">
+      <option *ngFor="let p of pacientes" [value]="p.id">{{ p.nombre }}</option>
+    </select> </label
+  ><br />
+
+  <label
+    >Médico:
+    <select [(ngModel)]="nuevaCita.idMedico" name="idMedico">
+      <option *ngFor="let m of medicos" [value]="m.id">{{ m.nombre }}</option>
+    </select> </label
+  ><br />
+
+  <label
+    >Fecha y Hora:
+    <input
+      type="datetime-local"
+      [(ngModel)]="nuevaCita.fechaHora"
+      name="fechaHora"
+      required
+    /> </label
+  ><br />
+
+  <label
+    >Motivo:
+    <input type="text" [(ngModel)]="nuevaCita.motivo" name="motivo" /> </label
+  ><br /><br />
+
+  <button type="submit">Agregar</button>
+</form>
