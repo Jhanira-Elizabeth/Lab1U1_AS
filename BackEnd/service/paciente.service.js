@@ -6,12 +6,28 @@ class PacienteService {
 
   async create(data) {
     try {
+      let fechaISO = data.fechanacimiento;
+      if (fechaISO) {
+        if (fechaISO instanceof Date) {
+          fechaISO = fechaISO.toISOString();
+        } else if (typeof fechaISO === "string" && !fechaISO.endsWith("Z")) {
+          const dateObj = new Date(fechaISO);
+          if (!isNaN(dateObj)) {
+            fechaISO = dateObj.toISOString();
+          }
+        }
+      } else {
+        throw new Error(
+          "El campo fechanacimiento es obligatorio y debe tener formato ISO-8601."
+        );
+      }
+
       const paciente = await prisma.paciente.create({
         data: {
           nombre: data.nombre,
           apellido: data.apellido,
           cedula: data.cedula,
-          fechanacimiento: data.fechanacimiento,
+          fechanacimiento: fechaISO,
           email: data.email,
         },
       });
@@ -46,13 +62,29 @@ class PacienteService {
 
   async update(id, data) {
     try {
+      let fechaISO = data.fechanacimiento;
+      if (fechaISO) {
+        if (fechaISO instanceof Date) {
+          fechaISO = fechaISO.toISOString();
+        } else if (typeof fechaISO === "string" && !fechaISO.endsWith("Z")) {
+          const dateObj = new Date(fechaISO);
+          if (!isNaN(dateObj)) {
+            fechaISO = dateObj.toISOString();
+          }
+        }
+      } else {
+        throw new Error(
+          "El campo fechanacimiento es obligatorio y debe tener formato ISO-8601."
+        );
+      }
+
       const paciente = await prisma.paciente.update({
-        where: { id: id },
+        where: { id: Number(id) },
         data: {
           nombre: data.nombre,
           apellido: data.apellido,
           cedula: data.cedula,
-          fecha_nacimiento: data.fecha_nacimiento,
+          fechanacimiento: fechaISO,
           email: data.email,
         },
       });
@@ -64,8 +96,11 @@ class PacienteService {
 
   async delete(id) {
     try {
+      await prisma.cita.deleteMany({
+        where: { idpaciente: Number(id) },
+      });
       const paciente = await prisma.paciente.delete({
-        where: { id: id },
+        where: { id: Number(id) },
       });
       return paciente;
     } catch (error) {

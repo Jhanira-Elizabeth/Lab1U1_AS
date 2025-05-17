@@ -8,8 +8,9 @@
         <th>Nombre</th>
         <th>Apellido</th>
         <th>Cedula</th>
-        <th>FechaNacimiento</th>
-        <th>Email</th>
+        <th>Fecha de Nacimiento</th>
+        <th>Correo</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -17,42 +18,84 @@
         <td>{{ paciente.nombre }}</td>
         <td>{{ paciente.apellido }}</td>
         <td>{{ paciente.cedula }}</td>
-        <td>{{ paciente.fechaNacimiento}}</td>
+        <td>{{ paciente.fechanacimiento| date: 'dd/MM/yyyy' }}</td>
         <td>{{ paciente.email }}</td>
+        <td>
+          <button class="btn btn-warning btn-sm me-1" (click)="editarPaciente(paciente)">
+            <i class="bi bi-pencil-fill"></i> Editar
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="eliminarPaciente(paciente)">
+            <i class="bi bi-trash-fill"></i> Eliminar
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>
 
-  <h3 class="mt-5">Agregar Paciente</h3>
+  <h3 class="mt-5">{{ editando ? 'Editar Paciente' : 'Agregar Paciente' }}</h3>
 
-  <form (ngSubmit)="agregarPaciente()" class="p-4 border rounded shadow bg-white">
+  <form #formPaciente="ngForm" (ngSubmit)="agregarPaciente()" class="p-4 border rounded shadow bg-white" novalidate>
+    <input type="hidden" [(ngModel)]="nuevoPaciente.id" name="id" />
 
     <div class="mb-3">
       <label for="nombrePaciente" class="form-label">Nombre:</label>
-      <input type="text" [(ngModel)]="nuevoPaciente.nombre" name="nombre" id="nombrePaciente" class="form-control" required />
+      <input type="text" [(ngModel)]="nuevoPaciente.nombre" name="nombre" id="nombrePaciente" 
+        class="form-control" required #nombre="ngModel" 
+        [ngClass]="{'is-invalid': nombre.invalid && (nombre.dirty || nombre.touched)}" />
+      <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="invalid-feedback">
+        El nombre es obligatorio.
+      </div>
     </div>
 
     <div class="mb-3">
-      <label for="edad" class="form-label">Edad:</label>
-      <input type="number" [(ngModel)]="nuevoPaciente.apellido" name="edad" id="edad" class="form-control" required />
+      <label for="apellidoPaciente" class="form-label">Apellido:</label>
+      <input type="text" [(ngModel)]="nuevoPaciente.apellido" name="apellido" id="apellidoPaciente" 
+        class="form-control" required #apellido="ngModel"
+        [ngClass]="{'is-invalid': apellido.invalid && (apellido.dirty || apellido.touched)}" />
+      <div *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="invalid-feedback">
+        El apellido es obligatorio.
+      </div>
     </div>
 
     <div class="mb-3">
-        <label for="edad" class="form-label">Edad:</label>
-        <input type="number" [(ngModel)]="nuevoPaciente.cedula" name="edad" id="edad" class="form-control" required />
+      <label for="cedulaPaciente" class="form-label">Cedula:</label>
+      <input type="text" [(ngModel)]="nuevoPaciente.cedula" name="cedula" id="cedulaPaciente" 
+        class="form-control" required #cedula="ngModel"
+        [ngClass]="{'is-invalid': cedula.invalid && (cedula.dirty || cedula.touched)}" />
+      <div *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)" class="invalid-feedback">
+        La cédula es obligatoria.
       </div>
+    </div>
 
-      <div class="mb-3">
-        <label for="edad" class="form-label">Edad:</label>
-        <input type="number" [(ngModel)]="nuevoPaciente.fechaNacimiento" name="edad" id="edad" class="form-control" required />
+    <div class="mb-3">
+      <label for="fechaNacimientoPaciente" class="form-label">Fecha de Nacimiento:</label>
+      <input type="date" [(ngModel)]="nuevoPaciente.fechanacimiento" name="fechaNacimiento" id="fechaNacimientoPaciente" 
+        class="form-control" required #fechaNacimiento="ngModel"
+        [ngClass]="{'is-invalid': fechaNacimiento.invalid && (fechaNacimiento.dirty || fechaNacimiento.touched)}" />
+      <div *ngIf="fechaNacimiento.invalid && (fechaNacimiento.dirty || fechaNacimiento.touched)" class="invalid-feedback">
+        La fecha de nacimiento es obligatoria.
       </div>
+    </div>
 
-      <div class="mb-3">
-        <label for="edad" class="form-label">Edad:</label>
-        <input type="number" [(ngModel)]="nuevoPaciente.email" name="edad" id="edad" class="form-control" required />
+    <div class="mb-3">
+      <label for="correoPaciente" class="form-label">Correo:</label>
+      <input type="email" [(ngModel)]="nuevoPaciente.email" name="correo" id="correoPaciente" 
+        class="form-control" required email #correo="ngModel"
+        [ngClass]="{'is-invalid': correo.invalid && (correo.dirty || correo.touched)}" />
+      <div *ngIf="correo.invalid && (correo.dirty || correo.touched)" class="invalid-feedback">
+        <div *ngIf="correo.errors?.['required']">El correo es obligatorio.</div>
+        <div *ngIf="correo.errors?.['email']">El formato del correo no es válido.</div>
       </div>
+    </div>
 
-    <button type="submit" class="btn btn-success w-100">Agregar Paciente</button>
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-success flex-grow-1" [disabled]="formPaciente.invalid">
+        {{ editando ? 'Actualizar Paciente' : 'Agregar Paciente' }}
+      </button>
+      <button *ngIf="editando" type="button" (click)="limpiarFormulario()" class="btn btn-secondary">
+        Cancelar
+      </button>
+    </div>
   </form>
 
 </div>

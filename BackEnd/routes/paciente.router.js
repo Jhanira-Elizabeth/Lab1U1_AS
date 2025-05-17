@@ -42,6 +42,12 @@ router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const updatedPaciente = req.body;
+        console.log('Datos recibidos para actualizar:', updatedPaciente);
+
+        if (!updatedPaciente.nombre || !updatedPaciente.apellido || !updatedPaciente.fechanacimiento) {
+            return res.status(400).json({ error: 'Faltan campos obligatorios' });
+        }
+
         const paciente = await service.update(id, updatedPaciente);
         if (!paciente) {
             return res.status(404).json({ error: 'Paciente not found' });
